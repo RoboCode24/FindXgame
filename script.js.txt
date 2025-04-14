@@ -1,0 +1,75 @@
+const gridSize = 5;
+let playerRow = 0;
+let playerCol = 0;
+let moveCount = 0;
+const maxMoves = 10;
+let win = false;
+
+// Generate random X position (not 0,0)
+let xRow, xCol;
+do {
+  xRow = Math.floor(Math.random() * 5);
+  xCol = Math.floor(Math.random() * 5);
+} while (xRow === 0 && xCol === 0);
+
+function drawGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  for (let row = 0; row < gridSize; row++) {
+    for (let col = 0; col < gridSize; col++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      
+      if (row === playerRow && col === playerCol) {
+        cell.classList.add('player');
+        cell.textContent = 'P';
+      }
+      grid.appendChild(cell);
+    }
+  }
+}
+
+function move(direction) {
+  if (win || moveCount >= maxMoves) return;
+
+  let tempRow = playerRow;
+  let tempCol = playerCol;
+
+  if (direction === 'L') tempCol--;
+  if (direction === 'R') tempCol++;
+  if (direction === 'U') tempRow--;
+  if (direction === 'D') tempRow++;
+
+  if (tempRow < 0 || tempRow >= gridSize || tempCol < 0 || tempCol >= gridSize) {
+    document.getElementById('status').textContent = "Invalid move. Stay within the grid.";
+    return;
+  }
+
+  playerRow = tempRow;
+  playerCol = tempCol;
+  moveCount++;
+
+  if (playerRow === xRow && playerCol === xCol) {
+    win = true;
+    document.getElementById('status').textContent = `🎉 You found X in ${moveCount} moves!`;
+    revealX();
+  } else if (moveCount >= maxMoves) {
+    document.getElementById('status').textContent = `💀 Game Over. The X was at (${xRow + 1}, ${xCol + 1}).`;
+    revealX();
+  } else {
+    document.getElementById('status').textContent = `Moves: ${moveCount}/${maxMoves}`;
+  }
+
+  drawGrid();
+}
+
+function revealX() {
+  const grid = document.getElementById('grid');
+  const index = xRow * gridSize + xCol;
+  const cell = grid.children[index];
+  cell.classList.add('x');
+  cell.textContent = 'X';
+}
+
+drawGrid();

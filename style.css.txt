@@ -1,0 +1,38 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #f9f9f9;
+}
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(5, 40px);
+  grid-gap: 5px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  font-weight: bold;
+}
+
+.player {
+  background-color: lightblue;
+}
+
+.x {
+  background-color: lightgreen;
+}
+
+#controls button {
+  margin: 5px;
+  padding: 10px;
+  font-size: 16px;
+}
